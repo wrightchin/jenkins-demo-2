@@ -8,7 +8,7 @@ WORKDIR /usr/src/app
 RUN chgrp -R 0 /usr/src/app &&\
  chmod -R g+rwX /usr/src/app
 
-COPY package*.json /usr/src/app
+COPY package*.json ./usr/src/app
 
 RUN npm install
 
