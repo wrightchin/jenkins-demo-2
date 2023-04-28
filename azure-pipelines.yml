@@ -92,7 +92,7 @@ stages:
         hideBase: false
         showNegligible: false
         scanner: 'registry.aquasec.com/scanner:2022.4'
-        connection: 'Stan-SaaS-CSP'
+        connection: 'aqua-saas'
     #     runOptions: '-e BUILD_NUMBER=$(Build.BuildId) -e BUILD_JOB_NAME=$(Build.Repository.Name)'
     # - task: CmdLine@2
     #   displayName: Push Image to ACR
@@ -100,4 +100,5 @@ stages:
     #     script: |-
     #       docker login -u $(ACR_USER) -p $(ACR_PASSWORD) $(ACR_REGISTRY)
     #       docker push $(ACR_REGISTRY)/jenkins-demo-2:$(Build.BuildId)
+
   
