@@ -1,10 +1,5 @@
-# Docker
-
-# Build a Docker image
-# https://docs.microsoft.com/azure/devops/pipelines/languages/docker
-
 trigger:
-- main
+- master
 
 resources:
 - repo: self
@@ -13,18 +8,22 @@ variables:
   tag: '$(Build.BuildId)'
 
 stages:
-- stage: Build
-  displayName: Build image
+- stage: AquaSCS
+  displayName: Aqua SupplyChain Security
   jobs:
-  - job: Build
-    displayName: Build
-    pool:
-      vmImage: ubuntu-latest
+  - job: Aqua
+    displayName: Aqua Code Scanner
+    container:
+      image: aquasec/aqua-scanner
+      env:
+        AQUA_KEY: $(AQUA_KEY)
+        AQUA_SECRET: $(AQUA_SECRET)
+        AQUA_URL: https://api.asia-1.supply-chain.cloud.aquasec.com
+        CSPM_URL: https://asia-1.api.cloudsploit.com
+        TRIVY_RUN_AS_PLUGIN: aqua 
     steps:
-    - task: Docker@2
-      displayName: Build an image
-      inputs:
-        command: build
-        dockerfile: '$(Build.SourcesDirectory)/Dockerfile'
-        tags: |
-          $(tag)
+    - script: |
+        trivy fs --scanners config,vuln,secret --sast .
+        # To customize which severities to scan for, add the following flag: --severity UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL
+        # To enable SAST scanning, add: --sast
+        # To enable npm/dotnet non-lock file scanning, add: --package-json / --dotnet-proj
