@@ -73,7 +73,7 @@ stages:
       displayName: Build Image
       inputs:
         command: build
-        repository: $(ACR_REGISTRY)/spring4shell
+        repository: $(ACR_REGISTRY)/jenkins-demo-2
         tags: $(Build.BuildId)
         dockerfile: '$(Build.SourcesDirectory)/Dockerfile'
     - task: CmdLine@2
@@ -86,18 +86,18 @@ stages:
     - task: aquasecScanner@4
       displayName: Aqua Image Scanner
       inputs:
-        image: $(ACR_REGISTRY)/spring4shell:$(Build.BuildId)
+        image: $(ACR_REGISTRY)/jenkins-demo-2:$(Build.BuildId)
         scanType: 'local'
         register: false
         hideBase: false
         showNegligible: false
         scanner: 'registry.aquasec.com/scanner:2022.4'
         connection: 'Stan-SaaS-CSP'
-        runOptions: '-e BUILD_NUMBER=$(Build.BuildId) -e BUILD_JOB_NAME=$(Build.Repository.Name)'
-    - task: CmdLine@2
-      displayName: Push Image to ACR
-      inputs: 
-        script: |-
-          docker login -u $(ACR_USER) -p $(ACR_PASSWORD) $(ACR_REGISTRY)
-          docker push $(ACR_REGISTRY)/spring4shell:$(Build.BuildId)
+    #     runOptions: '-e BUILD_NUMBER=$(Build.BuildId) -e BUILD_JOB_NAME=$(Build.Repository.Name)'
+    # - task: CmdLine@2
+    #   displayName: Push Image to ACR
+    #   inputs: 
+    #     script: |-
+    #       docker login -u $(ACR_USER) -p $(ACR_PASSWORD) $(ACR_REGISTRY)
+    #       docker push $(ACR_REGISTRY)/jenkins-demo-2:$(Build.BuildId)
   
